@@ -1,35 +1,14 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+# First, add namespace definition with security labels
+apiVersion: v1
+kind: Namespace
 metadata:
-  name: kube-prometheus-stack
-  namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "3"
-spec:
-  destination:
-    name: in-cluster
-    namespace: monitoring
-  project: default
-  source:
-    repoURL: 'https://prometheus-community.github.io/helm-charts'
-    targetRevision: 66.2.1
-    helm:
-      skipCrds: true
-      values: |-
-        #Snip the values
-        prometheus-node-exporter:
-          securityContext:
-            privileged: true
-            runAsUser: 0
-          extraArgs:
-            - --path.rootfs=/host
-    chart: kube-prometheus-stack
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-
+  name: monitoring
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/warn: privileged
 ---
+# CRDs Application
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -55,4 +34,34 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
+---
+# Main Application
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  destination:
+    name: in-cluster
+    namespace: monitoring
+  project: default
+  source:
+    repoURL: 'https://prometheus-community.github.io/helm-charts'
+    targetRevision: 66.2.1
+    helm:
+      skipCrds: true
+      values: |-
+        prometheus-node-exporter:
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          extraArgs:
+            - --path.rootfs=/host
+    chart: kube-prometheus-stack
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
