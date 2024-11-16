@@ -1,4 +1,20 @@
 ---
+apiVersion: networking.cfargotunnel.com/v1alpha1
+kind: ClusterTunnel
+metadata:
+  name: talos-cluster-tunnel
+spec:
+  newTunnel:
+    name: talos-tunnel         
+  size: 2                      
+  cloudflare:
+    email: cloudflare.overflow261@simplelogin.com
+    domain: mazilious.org         
+    secret: cloudflare-secrets
+    accountName:
+    accountId: 179a8dec324d9cbb61bcbdb7542e9b75
+
+---
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:

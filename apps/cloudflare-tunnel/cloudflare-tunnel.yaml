@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: secrets-management
+  name: cloudflare-tunnel
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/mfalicoff/gitops
     targetRevision: HEAD
-    path: secrets
+    path: cloudflare-tunnel
   destination:
     server: https://kubernetes.default.svc
     namespace: default
