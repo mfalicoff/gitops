@@ -55,11 +55,35 @@ spec:
       skipCrds: true
       values: |-
         prometheus-node-exporter:
+          hostNetwork: true
+          hostPID: true
           securityContext:
             privileged: true
             runAsUser: 0
+            runAsNonRoot: false
           extraArgs:
             - --path.rootfs=/host
+          hostRootFs: true
+          tolerations:
+            - operator: "Exists"
+          volumes:
+            - name: proc
+              hostPath:
+                path: /proc
+            - name: sys
+              hostPath:
+                path: /sys
+            - name: root
+              hostPath:
+                path: /
+          securityContext:
+            privileged: true
+            runAsUser: 0
+            runAsNonRoot: false
+        global:
+          rbac:
+            create: true
+            pspEnabled: false
     chart: kube-prometheus-stack
   syncPolicy:
     automated:
