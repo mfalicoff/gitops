@@ -41,4 +41,4 @@ subjects:
   - name: whoami
 tunnelRef:
   kind: ClusterTunnel
-  name: talos-cluster-tunnel
+  name: talos-tunnel
