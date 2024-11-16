@@ -17,6 +17,12 @@ spec:
       skipCrds: true
       values: |-
         #Snip the values
+        prometheus-node-exporter:
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          extraArgs:
+            - --path.rootfs=/host
     chart: kube-prometheus-stack
   syncPolicy:
     automated:
