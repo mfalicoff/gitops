@@ -11,7 +11,7 @@ spec:
     email: cloudflare.overflow261@simplelogin.com
     domain: mazilious.org         
     secret: cloudflare-secrets
-    accountName:
+    accountName: mazilious
     accountId: 179a8dec324d9cbb61bcbdb7542e9b75
 
 ---
